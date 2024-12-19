@@ -39,33 +39,6 @@ servletContext.removeAttribute("userCount");
 5. 应用程序级别的日志记录
 6. 获取 Web 应用程序的各种路径信息
 
-### 实际应用示例
-
-```java
-@WebServlet("/configReader")
-public class ConfigurationServlet extends HttpServlet {
-    
-    @Override
-    public void init() throws ServletException {
-        ServletContext context = getServletContext();
-        
-        // 读取应用程序级别的配置
-        String dbUrl = context.getInitParameter("dbUrl");
-        
-        // 加载配置文件
-        try (InputStream configFile = context.getResourceAsStream("/WEB-INF/config.properties")) {
-            Properties props = new Properties();
-            props.load(configFile);
-            
-            // 将配置存储在应用程序范围内
-            context.setAttribute("appConfig", props);
-        } catch (IOException e) {
-            context.log("Error loading configuration", e);
-        }
-    }
-}
-```
-
 ## ServletContext vs Servlet Container
 
 ServletContext 不是 servlet 容器。它们的区别如下：
@@ -113,17 +86,3 @@ JVM（Java Virtual Machine）是一个规范，它定义了一个虚拟计算机
 2. 启动一个新的 JVM 实例
 3. 程序在这个新的 JVM 实例中运行
 4. main 方法执行完毕后，JVM 实例终止
-
-示例代码：
-```java
-public class MyClass {
-    public static void main(String[] args) {
-        // 这些代码运行在一个新的 JVM 实例中
-        System.out.println("Hello World");
-        
-        // 查看 JVM 信息
-        System.out.println(System.getProperty("java.version")); // JDK 版本
-        System.out.println(System.getProperty("java.home"));   // JRE 路径
-    }
-}
-```
